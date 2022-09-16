@@ -1,0 +1,4 @@
+*.md
+.git*
+docker-compose.yaml
+nginx.conf
