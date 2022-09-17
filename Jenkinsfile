@@ -20,24 +20,10 @@ node {
         junit 'test-reports/results.xml'   
     }
 
-    stage('Deliver') { 
+    stage('Deliver') {
         def VOLUME='$(pwd)/sources:/src'
         def IMAGE='cdrx/pyinstaller-linux:python2'
 
-        try {
-            dir('env.BUILD_ID') {
-                unstash 'compiled-results'
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
-            }
-        } catch (e) {
-            echo 'Terjadi kesalahan'
-            throw e
-        } finally {
-            def currentResult = currentBuild.result
-            if (currentResult == 'SUCCESS') {
-                archive '${env.BUILD_ID}/sources/dist/add2vals' 
-                sh 'docker run --rm -v $VOLUME $IMAGE \'rm -rf build dist\''
-            }
-        }
+        sh 'echo ${VOLUME}, ${IMAGE}'
     }
 }
