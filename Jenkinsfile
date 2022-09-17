@@ -33,8 +33,8 @@ node {
             } finally {
                 def currentResult = currentBuild.result
                 if (currentResult == 'SUCCESS') {
-                    archive '${env.BUILD_ID}/sources/dist/add2vals' 
-                    sh 'docker run --rm -v $VOLUME $IMAGE \'rm -rf build dist\''
+                    archive '"${env.BUILD_ID}/sources/dist/add2vals"'
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 }
             }
         }
