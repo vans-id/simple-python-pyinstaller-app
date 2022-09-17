@@ -18,9 +18,9 @@ node {
     } finally {
         junit 'test-reports/results.xml'   
     }
-    stage('Deliver') { 
-        withEnv(['VOLUME = \'$(pwd)/sources:/src\'', 
-                 'IMAGE = \'cdrx/pyinstaller-linux:python2\'']) {
+    withEnv(['VOLUME = \'$(pwd)/sources:/src\'', 
+             'IMAGE = \'cdrx/pyinstaller-linux:python2\'']) {
+        stage('Deliver') { 
             try {
                 dir('env.BUILD_ID') {
                     unstash(name: 'compiled-results') 
@@ -36,6 +36,6 @@ node {
                     sh 'docker run --rm -v ${VOLUME} ${IMAGE} \'rm -rf build dist\''
                 }
             }
-        }
+        }  
     }
 }
