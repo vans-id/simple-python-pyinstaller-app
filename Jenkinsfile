@@ -21,8 +21,8 @@ node {
     }
 
     stage('Deliver') { 
-        def VOLUME = '$(pwd)/sources:/src'
-        def IMAGE = 'cdrx/pyinstaller-linux:python2'
+        def VOLUME='$(pwd)/sources:/src'
+        def IMAGE='cdrx/pyinstaller-linux:python2'
 
         try {
             dir('env.BUILD_ID') {
