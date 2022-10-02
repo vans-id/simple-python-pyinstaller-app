@@ -5,22 +5,21 @@ node {
             stash includes: 'sources/*.py*', name: 'compiled-results'
         }
     }
-
-    try {
-        stage('Test') {
+    stage('Test') {
+        try {
             withDockerContainer('qnib/pytest') {
                 sh 'py.test --junit-xml test-reports/results.xml sources/test_calc.py'
                 stash includes: 'sources/*.py*', name: 'compiled-results'
             }
+        } catch (e) {
+            echo 'Terjadi kesalahan'
+            throw e
+        } finally {
+            junit 'test-reports/results.xml'   
+            input 'Lanjutkan ke tahap Deploy?'
         }
-    } catch (e) {
-        echo 'Terjadi kesalahan'
-        throw e
-    } finally {
-        junit 'test-reports/results.xml'   
     }
-
-    stage('Deliver') {
+    stage('Deploy') {
         withEnv(['VOLUME=$(pwd)/sources:/src', 'IMAGE=cdrx/pyinstaller-linux:python2']) {
             try {
                 dir("${env.BUILD_ID}") {
@@ -32,6 +31,7 @@ node {
                 throw e
             } finally {
                 archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
+                sleep time: 1, unit: 'MINUTES'
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
             }
         }

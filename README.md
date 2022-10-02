@@ -1,15 +1,15 @@
 # Catatan
 
 ```
-docker network create jenkins
+docker network create submission-dicoding
 ```
 
 ```
-docker run --name jenkins-docker --detach ^
-  --privileged --network jenkins --network-alias docker ^
+docker run --name jenkins-docker-submission --detach ^
+  --privileged --network submission-dicoding --network-alias docker ^
   --env DOCKER_TLS_CERTDIR=/certs ^
-  --volume jenkins-docker-certs:/certs/client ^
-  --volume jenkins-data:/var/jenkins_home ^
+  --volume jenkins-docker-submission-certs:/certs/client ^
+  --volume jenkins-data-submission:/var/jenkins_home ^
   --publish 3000:3000 --publish 2376:2376 ^
   docker:dind
 ```
@@ -34,11 +34,11 @@ docker build -t myjenkins-blueocean:2.346.1-1 .
 ```
 
 ```
-docker run --name jenkins-blueocean --detach ^
-  --network jenkins --env DOCKER_HOST=tcp://docker:2376 ^
+docker run --name jenkins-blueocean-submission --detach ^
+  --network submission-dicoding --env DOCKER_HOST=tcp://docker:2376 ^
   --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 ^
-  --volume jenkins-data:/var/jenkins_home ^
-  --volume jenkins-docker-certs:/certs/client:ro ^
+  --volume jenkins-data-submission:/var/jenkins_home ^
+  --volume jenkins-docker-submission-certs:/certs/client:ro ^
   --volume "%HOMEDRIVE%%HOMEPATH%":/home ^
   --restart=on-failure ^
   --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" ^
@@ -56,3 +56,7 @@ Credentials:
 - e-mail : dicoding@dicoding.com
 
 - submission-cicd-pipeline-djevannn
+
+### Allow User to Sign Up
+
+Manage Jenkins > Configure Global Security > Centang **Allow users to sign up**
