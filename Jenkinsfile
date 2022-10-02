@@ -1,7 +1,7 @@
 node {
     stage('Build') {
         withDockerContainer('python:2-alpine') {
-            sh 'python -m py_compile ./sources/add2vals.py ./sources/calc.py'
+            sh 'python -m py_compile sources/add2vals.py sources/calc.py'
             stash includes: 'sources/*.py*', name: 'compiled-results'
         }
     }
@@ -17,23 +17,6 @@ node {
         } finally {
             junit 'test-reports/results.xml'   
             input 'Lanjutkan ke tahap Deploy?'
-        }
-    }
-    stage('Deploy') {
-        withEnv(['VOLUME=$(pwd)/sources:/src', 'IMAGE=cdrx/pyinstaller-linux:python2']) {
-            try {
-                dir("${env.BUILD_ID}") {
-                    unstash 'compiled-results'
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
-                }
-            } catch (e) {
-                echo 'Terjadi kesalahan'
-                throw e
-            } finally {
-                archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
-                sleep time: 1, unit: 'MINUTES'
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
-            }
         }
     }
 }
