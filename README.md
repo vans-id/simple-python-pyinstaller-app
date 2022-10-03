@@ -1,8 +1,12 @@
 # Catatan
 
+### Docker Netowkr
+
 ```
 docker network create submission-dicoding
 ```
+
+### Docker in docker (dind)
 
 ```
 docker run --name jenkins-docker-submission --detach ^
@@ -13,6 +17,8 @@ docker run --name jenkins-docker-submission --detach ^
   --publish 3000:3000 --publish 2376:2376 ^
   docker:dind
 ```
+
+### Blueocean
 
 ```dockerfile
 FROM jenkins/jenkins:2.346.1-jdk11
@@ -45,7 +51,7 @@ docker run --name jenkins-blueocean-submission --detach ^
   --publish 49000:8080 --publish 50000:50000 myjenkins-blueocean:2.346.1-1
 ```
 
-Credentials:
+### Credentials:
 
 - username: admin
 - password: admin
@@ -60,3 +66,24 @@ Credentials:
 ### Allow User to Sign Up
 
 Manage Jenkins > Configure Global Security > Centang **Allow users to sign up**
+
+### Enable Poll SCM
+
+- Klik salah satu Pipeline
+- Pada sidebar klik Configure
+- Build Triggers
+- Centang **Poll SCM**
+- Pada Schedule isikan `H/2 * * * *`
+- Klik Save
+
+### Promethus
+
+```
+docker run -d --name prometheus-submission -p 9091:9090 prom/prometheus
+```
+
+### Grafana
+
+```
+docker run -d --name grafana-submission -p 3031:3031 -e "GF_SERVER_HTTP_PORT=3031" grafana/grafana
+```
