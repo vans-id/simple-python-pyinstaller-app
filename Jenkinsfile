@@ -31,7 +31,7 @@ node {
                 throw e
             } finally {
                 archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
-                sh "scp -i submission-keypair.pem ${env.BUILD_ID}/sources/dist/add2vals ec2-user@ec2-18-143-67-105.ap-southeast-1.compute.amazonaws.com:~/."
+                sh "scp -i ./submission-keypair.pem ${env.BUILD_ID}/sources/dist/add2vals ec2-user@ec2-18-143-67-105.ap-southeast-1.compute.amazonaws.com:~/."
                 sleep time: 1, unit: 'MINUTES'
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
             }
