@@ -87,3 +87,11 @@ docker run -d --name prometheus-submission -p 9091:9090 prom/prometheus
 ```
 docker run -d --name grafana-submission -p 3031:3031 -e "GF_SERVER_HTTP_PORT=3031" grafana/grafana
 ```
+
+```
+scp -i submission-keypair.pem <nama_file> ec2-user@<public_ipv4_dns>:~/.
+```
+
+```
+scp -i submission-keypair.pem note.txt ec2-user@ec2-18-143-67-105.ap-southeast-1.compute.amazonaws.com:~/.
+```
