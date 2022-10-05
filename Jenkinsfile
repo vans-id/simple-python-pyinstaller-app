@@ -31,13 +31,14 @@ node {
                 throw e
             } finally {
                 archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
+                sh "mv ${env.BUILD_ID}/sources/dist/add2vals add2vals"
                 sshPublisher(
                     continueOnError: false, failOnError: true,
                     publishers: [
                         sshPublisherDesc(
                             configName: "submission-webserver",
                             transfers: [sshTransfer(
-                                sourceFiles: "${env.BUILD_ID}/sources/dist/add2vals")
+                                sourceFiles: "add2vals"
                             ],
                             verbose: true
                         )
