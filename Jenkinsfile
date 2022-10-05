@@ -51,10 +51,19 @@ node {
                             configName: 'submission-webserver',
                             transfers: [ 
                                 sshTransfer(
-                                    execCommand: '''
-                                    chmod a+x add2vals
-                                    ./add2vals 5 3
-                                    '''
+                                    execCommand: "chmod a+x ${env.BUILD_ID}/sources/dist/add2vals"
+                                )
+                            ]
+                        )
+                    ]
+                )
+                sshPublisher(
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: 'submission-webserver',
+                            transfers: [ 
+                                sshTransfer(
+                                    execCommand: "./${env.BUILD_ID}/sources/dist/add2vals 5 3"
                                 )
                             ]
                         )
