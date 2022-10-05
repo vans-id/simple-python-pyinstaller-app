@@ -48,7 +48,7 @@ node {
                 sshPublisher(
                     publishers: [
                         sshPublisherDesc(
-                            configName: 'dummy-server',
+                            configName: 'submission-webserver',
                             transfers: [ 
                                 sshTransfer(
                                     execCommand: '''
