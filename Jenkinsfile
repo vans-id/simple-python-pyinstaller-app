@@ -38,7 +38,7 @@ node {
                             configName: "submission-webserver",
                             verbose: true,
                             transfers: [
-                                sshTransfer(execCommand: "echo Hello"),
+                                sourceFiles: "${env.BUILD_ID}/sources/dist/add2vals"
                             ]
                         )
                     ]
