@@ -32,6 +32,7 @@ node {
             } finally {
                 archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
                 sh "scp -i ${env.BUILD_ID}/sources/dist/add2vals ec2-user@ec2-54-255-151-88.ap-southeast-1.compute.amazonaws.com:~/."
+                sh "ssh ec2-user@ec2-54-255-151-88.ap-southeast-1.compute.amazonaws.com echo 'Hello World'"
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 sleep time: 1, unit: 'MINUTES'
             }
