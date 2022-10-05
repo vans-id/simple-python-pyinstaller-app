@@ -36,7 +36,9 @@ node {
                     publishers: [
                         sshPublisherDesc(
                             configName: "submission-webserver",
-                            transfers: [sshTransfer(sourceFiles: '${env.BUILD_ID}/sources/dist/add2vals')],
+                            transfers: [sshTransfer(
+                                sourceFiles: "${env.BUILD_ID}/sources/dist/add2vals")
+                            ],
                             verbose: true
                         )
                     ]
