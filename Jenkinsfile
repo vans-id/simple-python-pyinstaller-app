@@ -31,16 +31,32 @@ node {
                 throw e
             } finally {
                 archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
-                sh "mv ${env.BUILD_ID}/sources/dist/add2vals add2vals"
                 sshPublisher(
                     continueOnError: false, failOnError: true,
                     publishers: [
                         sshPublisherDesc(
                             configName: "submission-webserver",
                             transfers: [
-                                sshTransfer(sourceFiles: "add2vals")
+                                sshTransfer(
+                                    remoteDirectory: '/home/ec2-user',
+                                    sourceFiles: "${env.BUILD_ID}/sources/dist/add2vals"
+                                )
                             ],
-                            verbose: true
+                        )
+                    ]
+                )
+                sshPublisher(
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: 'dummy-server',
+                            transfers: [ 
+                                sshTransfer(
+                                    execCommand: '''
+                                    chmod a+x add2vals
+                                    ./add2vals 5 3
+                                    '''
+                                )
+                            ]
                         )
                     ]
                 )
