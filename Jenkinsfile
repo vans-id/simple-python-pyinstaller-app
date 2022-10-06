@@ -45,32 +45,6 @@ node {
                         )
                     ]
                 )
-                sshPublisher(
-                    publishers: [
-                        sshPublisherDesc(
-                            configName: 'submission-webserver',
-                            transfers: [ 
-                                sshTransfer(
-                                    remoteDirectory: '/home/ec2-user',
-                                    execCommand: "chmod a+x ${env.BUILD_ID}/sources/dist/add2vals"
-                                )
-                            ]
-                        )
-                    ]
-                )
-                sshPublisher(
-                    publishers: [
-                        sshPublisherDesc(
-                            configName: 'submission-webserver',
-                            transfers: [ 
-                                sshTransfer(
-                                    remoteDirectory: '/home/ec2-user',
-                                    execCommand: "./${env.BUILD_ID}/sources/dist/add2vals 5 3"
-                                )
-                            ]
-                        )
-                    ]
-                )
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 sleep time: 1, unit: 'MINUTES'
             }
