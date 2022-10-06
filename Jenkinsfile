@@ -51,6 +51,7 @@ node {
                             configName: 'submission-webserver',
                             transfers: [ 
                                 sshTransfer(
+                                    remoteDirectory: '/home/ec2-user',
                                     execCommand: "chmod a+x ${env.BUILD_ID}/sources/dist/add2vals"
                                 )
                             ]
@@ -63,6 +64,7 @@ node {
                             configName: 'submission-webserver',
                             transfers: [ 
                                 sshTransfer(
+                                    remoteDirectory: '/home/ec2-user',
                                     execCommand: "./${env.BUILD_ID}/sources/dist/add2vals 5 3"
                                 )
                             ]
