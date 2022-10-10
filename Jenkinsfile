@@ -15,9 +15,11 @@ node {
             echo 'Terjadi kesalahan'
             throw e
         } finally {
-            junit 'test-reports/results.xml'   
-            input 'Lanjutkan ke tahap Deploy?'
+            junit 'test-reports/results.xml'
         }
+    }
+    stage('Manual Approval') {
+        input 'Lanjutkan ke tahap Deploy?'
     }
     stage('Deploy') {
         withEnv(['VOLUME=$(pwd)/sources:/src', 'IMAGE=cdrx/pyinstaller-linux:python2']) {
