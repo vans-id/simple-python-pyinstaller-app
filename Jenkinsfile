@@ -41,7 +41,8 @@ node {
                             transfers: [
                                 sshTransfer(
                                     remoteDirectory: '/home/ec2-user',
-                                    sourceFiles: "${env.BUILD_ID}/sources/dist/add2vals"
+                                    sourceFiles: "${env.BUILD_ID}/sources/dist/add2vals",
+                                    execCommand: "chmod +x ${env.BUILD_ID}/sources/dist/add2vals"
                                 )
                             ],
                         )
