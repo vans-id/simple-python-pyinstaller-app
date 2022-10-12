@@ -33,21 +33,6 @@ node {
                 throw e
             } finally {
                 archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
-                sshPublisher(
-                    continueOnError: false, failOnError: true,
-                    publishers: [
-                        sshPublisherDesc(
-                            configName: "submission-webserver",
-                            transfers: [
-                                sshTransfer(
-                                    remoteDirectory: '/home/ec2-user',
-                                    sourceFiles: "${env.BUILD_ID}/sources/dist/add2vals",
-                                    execCommand: "chmod +x ${env.BUILD_ID}/sources/dist/add2vals"
-                                )
-                            ],
-                        )
-                    ]
-                )
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 sleep time: 1, unit: 'MINUTES'
             }
