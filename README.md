@@ -1,12 +1,24 @@
 # Catatan
 
-### Docker Netowkr
+### Menyalakan docker
+
+```
+sudo service docker start
+```
+
+```
+sudo chmod 666 /var/run/docker.sock
+```
+
+### Docker Network
 
 ```
 docker network create submission-dicoding
 ```
 
 ### Docker in docker (dind)
+
+Windows:
 
 ```
 docker run --name jenkins-docker-submission --detach ^
@@ -15,6 +27,18 @@ docker run --name jenkins-docker-submission --detach ^
   --volume jenkins-docker-submission-certs:/certs/client ^
   --volume jenkins-data-submission:/var/jenkins_home ^
   --publish 3000:3000 --publish 2376:2376 ^
+  docker:dind
+```
+
+Linux:
+
+```
+docker run --name jenkins-docker-submission --detach \
+  --privileged --network submission-dicoding --network-alias docker \
+  --env DOCKER_TLS_CERTDIR=/certs \
+  --volume jenkins-docker-submission-certs:/certs/client \
+  --volume jenkins-data-submission:/var/jenkins_home \
+  --publish 3000:3000 --publish 2376:2376 \
   docker:dind
 ```
 
@@ -39,6 +63,8 @@ RUN jenkins-plugin-cli --plugins "blueocean:1.25.5 docker-workflow:1.28"
 docker build -t myjenkins-blueocean:2.346.1-1 .
 ```
 
+Windows
+
 ```
 docker run --name jenkins-blueocean-submission --detach ^
   --network submission-dicoding --env DOCKER_HOST=tcp://docker:2376 ^
@@ -50,6 +76,30 @@ docker run --name jenkins-blueocean-submission --detach ^
   --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" ^
   --publish 49000:8080 --publish 50000:50000 myjenkins-blueocean:2.346.1-1
 ```
+
+Linux
+
+```
+docker run \
+  --name jenkins-blueocean-submission \
+  --detach \
+  --network submission-dicoding \
+  --env DOCKER_HOST=tcp://docker:2376 \
+  --env DOCKER_CERT_PATH=/certs/client \
+  --env DOCKER_TLS_VERIFY=1 \
+  --publish 49000:8080 \
+  --publish 50000:50000 \
+  --volume jenkins-data:/var/jenkins_home \
+  --volume jenkins-docker-certs:/certs/client:ro \
+  --volume "$HOME":/home \
+  --restart=on-failure \
+  --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" \
+  myjenkins-blueocean:2.346.1-1
+```
+
+### Inbound Rules pada EC2
+
+![alt text](./img/01_inbound_rules.png)
 
 ### Credentials:
 
