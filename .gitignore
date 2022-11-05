@@ -101,3 +101,4 @@ ENV/
 
 docker-compose.yaml
 nginx.conf
+*.pem
